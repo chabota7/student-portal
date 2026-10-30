@@ -1,0 +1,60 @@
+/* Universal Base Styles */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+/* Left Panel Background Gradient */
+.left-panel {
+    background: linear-gradient(160deg, rgba(75, 63, 191, 0.85), rgba(26, 20, 70, 0.95)),
+                url("../../campus.jpeg") center/cover no-repeat;
+}
+
+/* Right Panel & Card Backgrounds */
+.right-panel, .portal-card {
+    background-color: #222222 !important;
+    border: none !important;
+}
+
+.portal-header {
+    background-color: #222222 !important;
+    border-bottom: 1px solid #495057 !important;
+}
+
+/* Group Members Box */
+.group-members {
+    background: rgba(0, 0, 0, 0.35);
+    border-left: 4px solid #f4b91a;
+}
+
+/* Input Focus Border Effects */
+.form-control:focus, .form-select:focus {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+    border-color: #f4b91a !important;
+    box-shadow: 0 0 0 0.25rem rgba(244, 185, 26, 0.25) !important;
+}
+
+/* Primary Accent Colors & Buttons */
+.btn-warning {
+    background-color: #f4b91a !important;
+    border-color: #f4b91a !important;
+    color: #121212 !important;
+}
+
+.btn-warning:hover {
+    background-color: #d9a316 !important;
+    border-color: #d9a316 !important;
+}
+
+.text-warning {
+    color: #f4b91a !important;
+}
+
+/* Responsive adjustments for headings on mobile */
+@media (max-width: 768px) {
+    .portal-header h1 {
+        font-size: 1.8rem;
+    }
+}
