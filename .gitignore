@@ -1,1 +1,5 @@
-.DS_Store, Thumbs.db, *.zip
+.DS_Store
+Thumbs.db
+*.zip
+login_test.php
+test_*.php

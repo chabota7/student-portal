@@ -1,59 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal - Group 10</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- Custom CSS Overrides for Black Background, Light Grey Navigation Bar, and White Headings -->
-    <style>
-        body.bg-indigo {
-            background-color: #000000 !important; /* Black background */
-        }
-        .navbar {
-            background-color: #e5e7eb !important; /* Light Grey navigation bar */
-        }
-        .navbar-brand,
-        .nav-link,
-        .navbar-nav .nav-link {
-            color: #1f2937 !important; /* Dark Grey/Black text for readability on Light Grey */
-        }
-        .nav-link.active,
-        .nav-link:hover {
-            color: #000000 !important; /* Full black on active/hover */
-            font-weight: bold;
-        }
-        h1, h2, h3, h4, h5, h6, .card-title, .portal-header h1 {
-            color: #ffffff !important; /* White headings */
-        }
-    </style>
-</head>
-<body class="bg-indigo text-white flex-column min-vh-100">
-
-    <!-- Responsive Navigation Bar -->
-    <nav class="navbar navbar-expand-lg border-bottom border-secondary sticky-top">
-        <div class="container-fluid px-3 px-lg-4">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#" onclick="showSection('home', event)">
-                <img src="../../logo.png" alt="Logo" width="35" height="35" class="d-inline-block align-text-top rounded-circle">
-                <span>ZCASU Portal</span>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav text-center text-lg-start mt-2 mt-lg-0">
-                    <li class="nav-item mx-lg-2"><a class="nav-link nav-btn active fw-semibold py-2 py-lg-0" href="#" onclick="showSection('home', event)">Home</a></li>
-                    <li class="nav-item mx-lg-2"><a class="nav-link nav-btn fw-semibold py-2 py-lg-0" href="#" onclick="showSection('courses', event)">Courses</a></li>
-                    <li class="nav-item mx-lg-2"><a class="nav-link nav-btn fw-semibold py-2 py-lg-0" href="#" onclick="showSection('resources', event)">Resources</a></li>
-                    <li class="nav-item mx-lg-2"><a class="nav-link fw-semibold py-2 py-lg-0 text-danger" href="registration.html">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- MAIN CONTENT CONTAINER -->
+     <?php
+require_once '../../includes/config.php';
+require_once '../../includes/auth.php';
+require_login();
+
+$page_title = 'Student Portal';
+include '../../includes/header.php';
+include '../../includes/navbar.php';
+?>
     <main class="flex-grow-1">
 
         <!-- HOME SECTION -->
@@ -95,7 +49,7 @@
                             <div class="card-body d-flex flex-column p-4">
                                 <h3 class="card-title h5">Student Support</h3>
                                 <p class="card-text text-light opacity-75">Need assistance? Reach out to technical support or your course coordinators.</p>
-                                <a href="registration.html" class="btn btn-warning mt-auto fw-bold w-100 py-2 text-center text-decoration-none text-dark">Support Center</a>
+                                <a href="registration.php" class="btn btn-warning mt-auto fw-bold w-100 py-2 text-center text-decoration-none text-dark">Support Center</a>
                             </div>
                         </div>
                     </div>
@@ -182,15 +136,7 @@
 
     </main>
 
-    <!-- Footer Pushed to Bottom -->
-    <footer class="bg-black text-center text-secondary py-3 border-top border-secondary mt-auto">
-        <div class="container px-3">
-            <small>&copy; 2026 ZCAS University - Group 10 Web Application Development</small>
-        </div>
-    </footer>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Responsive Section Switching & Mobile Nav Auto-Collapse Script -->
     <script>
@@ -224,5 +170,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
-</body>
-</html>
+
+    <div class="purple-dot"></div>
+
+    <?php include '../../includes/footer.php'; ?>

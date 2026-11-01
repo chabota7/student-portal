@@ -17,7 +17,7 @@
             <!-- Left Panel -->
             <aside class="col-12 col-lg-5 left-panel p-4 p-md-5 d-flex flex-column justify-content-center">
                 <div class="logo mb-4">
-                    <img src="logo.png" alt="University Logo" class="img-fluid rounded-circle" style="max-width: 120px;">
+                    <img src="../../logo.png" alt="University Logo" class="img-fluid rounded-circle" style="max-width: 120px;">
                 </div>
                 <h2 class="fw-bold mb-3 text-white">Welcome to the Student Portal</h2>
                 <ul class="list-unstyled mb-4">
@@ -42,7 +42,7 @@
             <!-- Right Panel / Form Section -->
             <main class="col-12 col-lg-7 right-panel p-4 p-md-5 d-flex flex-column justify-content-center">
                 <h1 class="h2 text-warning fw-bold mb-2">Create Student Account</h1>
-                <p class="text-secondary mb-4">Already Enrolled? <a href="portal.html" class="text-warning text-decoration-underline fw-bold">Log In to Portal</a></p>
+                <p class="text-secondary mb-4">Already Enrolled? <a href="assets/php/portal.html" class="text-warning text-decoration-underline fw-bold">Log In to Portal</a></p>
                 
                 <button class="btn btn-outline-light w-100 mb-3 py-2" type="button">Continue with Google/SSO</button>
                 
