@@ -4,7 +4,8 @@ const message = document.getElementById("message");
 
 // 2. Grab the inputs
 const studentId = document.getElementById("studentId");
-const fullName = document.getElementById("fullName");
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
 const email = document.getElementById("email");
 const phone = document.getElementById("phone");
 const programme = document.getElementById("programme");
@@ -22,7 +23,6 @@ function showError(fieldId, text) {
 // 3. Listen for submit event
 if (form) {
   form.addEventListener("submit", function (event) {
-    event.preventDefault();
     let isValid = true;
 
     // Clear old errors
@@ -47,15 +47,31 @@ if (form) {
     }
 
     // Full Name
-    const nameValue = fullName.value.trim();
-    if (nameValue === "") {
-      showError("fullName", "Full name is required");
+    // First Name
+    const firstValue = firstName.value.trim();
+    if (firstValue === "") {
+      showError("firstName", "First name is required");
       isValid = false;
-    } else if (nameValue.length < 3) {
-      showError("fullName", "Name must have at least 3 characters");
+    } else if (firstValue.length < 2) {
+      showError("firstName", "First name must have at least 2 characters");
+      isValid = false;
+    } else if (!/^[A-Za-z' -]+$/.test(firstValue)) {
+      showError("firstName", "First name can only contain letters");
       isValid = false;
     }
 
+    // Last Name
+    const lastValue = lastName.value.trim();
+    if (lastValue === "") {
+      showError("lastName", "Last name is required");
+      isValid = false;
+    } else if (lastValue.length < 2) {
+      showError("lastName", "Last name must have at least 2 characters");
+      isValid = false;
+    } else if (!/^[A-Za-z' -]+$/.test(lastValue)) {
+      showError("lastName", "Last name can only contain letters");
+      isValid = false;
+    }
     // Email
     const emailValue = email.value.trim();
     if (emailValue === "") {
@@ -114,15 +130,10 @@ if (form) {
       isValid = false;
     }
 
-    // Final Validation check & Redirect
-    if (isValid) {
-      message.classList.add("text-success");
-      message.textContent = "Registration successful! Redirecting to Student Portal...";
-      
-      setTimeout(function () {
-        window.location.href = "portal.html";
-      }, 1500);
-    } else {
+    
+      // Only stop the form if something is invalid
+    if (!isValid) {
+      event.preventDefault();
       message.classList.add("text-danger");
       message.textContent = "Please fix the errors above and try again";
     }
