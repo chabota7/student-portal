@@ -1,3 +1,113 @@
+<?php
+require_once '../../includes/config.php';
+require_once '../../includes/auth.php';
+
+function e($value) {
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+$programmes = [
+    'BSc Cyber Security',
+    'BSc Software Engineering',
+    'BSc Data Science',
+    'BSc Information Technology',
+    'BSc Computer Science',
+];
+
+$errors = [];
+$old = [
+    'student_id' => '', 'first_name' => '', 'last_name' => '',
+    'email' => '', 'phone' => '', 'programme' => '', 'year' => '',
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $student_id = trim($_POST['student_id'] ?? '');
+    $first_name = trim($_POST['first_name'] ?? '');
+    $last_name  = trim($_POST['last_name'] ?? '');
+    $email      = trim($_POST['email'] ?? '');
+    $phone      = trim($_POST['phone'] ?? '');
+    $programme  = trim($_POST['programme'] ?? '');
+    $year       = trim($_POST['year'] ?? '');
+    $password   = $_POST['password'] ?? '';
+    $confirm    = $_POST['confirm_password'] ?? '';
+
+    // Keep what they typed (never the passwords)
+    $old = [
+        'student_id' => $student_id, 'first_name' => $first_name,
+        'last_name' => $last_name, 'email' => $email, 'phone' => $phone,
+        'programme' => $programme, 'year' => $year,
+    ];
+
+    // --- Validation (same rules as registration.js) ---
+    if (!preg_match('/^\d{8,10}$/', $student_id)) {
+        $errors['student_id'] = 'Student ID must be 8 to 10 digits.';
+    }
+    if (!preg_match("/^[A-Za-z' -]{2,50}$/", $first_name)) {
+        $errors['first_name'] = 'First name must be 2 to 50 letters.';
+    }
+    if (!preg_match("/^[A-Za-z' -]{2,50}$/", $last_name)) {
+        $errors['last_name'] = 'Last name must be 2 to 50 letters.';
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 100) {
+        $errors['email'] = 'Enter a valid email address.';
+    }
+    if (!preg_match('/^\d{9,10}$/', $phone)) {
+        $errors['phone'] = 'Phone number must be 9 to 10 digits.';
+    }
+    if (!in_array($programme, $programmes, true)) {
+        $errors['programme'] = 'Please select a programme.';
+    }
+    if (!in_array($year, ['1', '2', '3', '4'], true)) {
+        $errors['year'] = 'Please select your year of study.';
+    }
+    if (strlen($password) < 6 || !preg_match('/\d/', $password)) {
+        $errors['password'] = 'Password must have at least 6 characters and one number.';
+    }
+    if ($password !== $confirm) {
+        $errors['confirm_password'] = 'Passwords do not match.';
+    }
+
+    // --- Duplicate check (prepared statement) ---
+    if (empty($errors)) {
+        $stmt = $conn->prepare('SELECT student_id, email FROM students WHERE student_id = ? OR email = ?');
+        $stmt->bind_param('ss', $student_id, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            if ($row['student_id'] === $student_id) {
+                $errors['student_id'] = 'That Student ID is already registered.';
+            }
+            if (strcasecmp($row['email'], $email) === 0) {
+                $errors['email'] = 'That email is already registered.';
+            }
+        }
+        $stmt->close();
+    }
+
+    // --- Save (prepared statement, hashed password) ---
+    if (empty($errors)) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $year_int = (int) $year;
+
+        try {
+            $stmt = $conn->prepare(
+                'INSERT INTO students (student_id, first_name, last_name, programme, `year`, email, phone, password_hash)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+            );
+            $stmt->bind_param('ssssisss', $student_id, $first_name, $last_name, $programme, $year_int, $email, $phone, $hash);
+            $stmt->execute();
+            $stmt->close();
+
+            $_SESSION['flash_success'] = 'Registration successful! Please log in.';
+            header('Location: ' . BASE_URL . '/assets/php/login.php');
+            exit;
+        } catch (mysqli_sql_exception $ex) {
+            $errors['general'] = 'Sorry, we could not save your registration. Please try again.';
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,32 +162,52 @@
                     <hr class="flex-grow-1 border-secondary">
                 </div>
 
-                <form id="registrationForm" novalidate>
+                <?php if (!empty($errors)): ?>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            <?php foreach ($errors as $error): ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>   
+
+                <form id="registrationForm" method="post" action="" novalidate>
                     
                     <!-- Row 1: ID & Name -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-12 col-md-6">
-                            <label for="studentId" class="form-label text-light small">Student ID</label>
-                            <input type="text" class="form-control bg-secondary text-white border-0" id="studentId">
-                            <span class="text-danger small" id="studentIdError"></span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label for="fullName" class="form-label text-light small">Full Name</label>
-                            <input type="text" class="form-control bg-secondary text-white border-0" id="fullName">
-                            <span class="text-danger small" id="fullNameError"></span>
-                        </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-12">
+
+                        <label for="studentId" class="form-label text-light small">Student ID</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="studentId" name="student_id" value="<?php echo e($old['student_id']); ?>">
+                        <span class="text-danger small" id="studentIdError"></span>
                     </div>
+                </div>
+                      
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-6">
+                        <label for="firstName" class="form-label text-light small">First Name</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="firstName" name="first_name" value="<?php echo e($old['first_name']); ?>">
+                        <span class="text-danger small" id="firstNameError"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="lastName" class="form-label text-light small">Last Name</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="lastName" name="last_name" value="<?php echo e($old['last_name']); ?>">
+                        <span class="text-danger small" id="lastNameError"></span>
+                    </div>    
+                </div>    
+
 
                     <!-- Row 2: Email & Phone -->
                     <div class="row g-3 mb-3">
                         <div class="col-12 col-md-6">
                             <label for="email" class="form-label text-light small">Email</label>
-                            <input type="email" class="form-control bg-secondary text-white border-0" id="email">
+                            <input type="email" class="form-control bg-secondary text-white border-0" id="email" name="email" value="<?php echo e($old['email']); ?>">
                             <span class="text-danger small" id="emailError"></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="phone" class="form-label text-light small">Phone</label>
-                            <input type="text" class="form-control bg-secondary text-white border-0" id="phone">
+                            <input type="text" class="form-control bg-secondary text-white border-0" id="phone" name="phone" value="<?php echo e($old['phone']); ?>">
                             <span class="text-danger small" id="phoneError"></span>
                         </div>
                     </div>
@@ -86,20 +216,28 @@
                     <div class="row g-3 mb-3">
                         <div class="col-12 col-md-6">
                             <label for="programme" class="form-label text-light small">Degree Programme</label>
-                            <select class="form-select bg-secondary text-white border-0" id="programme">
+                            <select class="form-select bg-secondary text-white border-0" id="programme" name="programme">
                                 <option value="">Select Programme</option>
-                                <option value="CS">Cyber Security</option>
-                                <option value="SE">Software Engineering</option>
-                                <option value="DS">Data Science</option>
-                                <option value="IT">Information Technology</option>
-                                <option value="CS">Computer Science</option>
+                                <?php foreach ($programmes as $p): ?>
+                                    <option value="<?php echo e($p); ?>" <?php echo $old['programme'] === $p ? 'selected' : ''; ?>>
+                                        <?php echo e(str_replace('BSc ', '', $p)); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                                <option value="BSc Software Engineering">Software Engineering</option>
+                                <option value="BSc Cyber Security">Cyber Security</option>
+                                <option value="BSc Data Science">Data Science</option>
+                                <option value="BSc Information Technology">Information Technology</option>
+                                <option value="BSc Computer Science">Computer Science</option>
                             </select>
                             <span class="text-danger small" id="programmeError"></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="year" class="form-label text-light small">Year of Study</label>
-                            <select class="form-select bg-secondary text-white border-0" id="year">
+                            <select class="form-select bg-secondary text-white border-0" id="year" name="year">
                                 <option value="">Select Year</option>
+                                <?php for ($y = 1; $y <= 4; $y++): ?>
+                                    <option value="<?php echo $y; ?>" <?php echo $old['year'] === (string) $y ? 'selected' : ''; ?>><?php echo $y; ?></option>
+                                <?php endfor; ?>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -113,12 +251,12 @@
                     <div class="row g-3 mb-4">
                         <div class="col-12 col-md-6">
                             <label for="password" class="form-label text-light small">Password</label>
-                            <input type="password" class="form-control bg-secondary text-white border-0" id="password">
+                            <input type="password" class="form-control bg-secondary text-white border-0" id="password" name="password">
                             <span class="text-danger small" id="passwordError"></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="confirmPassword" class="form-label text-light small">Confirm Password</label>
-                            <input type="password" class="form-control bg-secondary text-white border-0" id="confirmPassword">
+                            <input type="password" class="form-control bg-secondary text-white border-0" id="confirmPassword" name="confirm_password">
                             <span class="text-danger small" id="confirmPasswordError"></span>
                         </div>
                     </div>
