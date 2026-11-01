@@ -14,3 +14,5 @@ try {
 } catch (mysqli_sql_exception $e) {
     die('Sorry, we could not connect to the database. Please try again later.');
 }
+
+define('BASE_URL', '/student-portal');
