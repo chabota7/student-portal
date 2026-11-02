@@ -13,3 +13,6 @@ function require_login() {
         exit;
     }
 }
+function e($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
