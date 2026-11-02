@@ -2,9 +2,6 @@
 require_once '../../includes/config.php';
 require_once '../../includes/auth.php';
 
-function e($value) {
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
 
 $programmes = [
     'BSc Cyber Security',
