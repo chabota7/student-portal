@@ -1,15 +1,15 @@
-# Student Portal - CCS2112 Tutorial 4
+# Student Portal - CCS2112 Web Development Tutorial 4
 
 PHP, MySQL, CRUD and Authentication
 Class Group 2, Assignment Group 10
 
 ## Group Members
-- Chabota Mweetwa - 202500172
-- Michael Judge - 202500911
-- Buya Mukolo - 202500723
-- Panuel Sibanda - 20202582
-- Thokozile Banda - 202505196
-- Soonfa Wakasaka - 202503846
+- Chabota Mweetwa
+- Michael Judge 
+- Buya Mukolo 
+- Panuel Sibanda 
+- Thokozile Banda 
+- Soonfa Wakasaka 
 
 ## Requirements
 - XAMPP (Apache 2.4 and MySQL running, PHP 8.2)
