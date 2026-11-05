@@ -1,0 +1,312 @@
+/* ==========================================
+   Reset & Base Layout
+   ========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+      135deg, 
+        rgba(13, 27, 42, 0.008) 0%, 
+        rgba(27, 38, 59, 0) 50%, 
+        rgba(20, 25, 37, 0) 100%
+    ),
+    url('../../assets/art.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Navigation Header */
+header {
+  width: 100%;
+  padding: 20px 40px;
+  backdrop-filter: blur(8px);
+  background:rgba(18, 18, 18, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.menu-links {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+}
+
+.menu-links a {
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.menu-links a:hover {
+  color: #66d6168d;
+}
+
+/* ==========================================
+   Toast Notification
+   ========================================== */
+.toast {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: #f0e10e;
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ==========================================
+   Login Form Card
+   ========================================== */
+.login-card {
+  background: rgba(18, 18, 18, 0.623);
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 32px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: auto; /* Vertically and horizontally centers the card */
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-header h2 {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.title-underline {
+  width: 48px;
+  height: 4px;
+  background: #f4b91a;
+  margin: 8px auto 0;
+  border-radius: 2px;
+}
+
+/* ==========================================
+   Input Controls
+   ========================================== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f4b91a;
+  margin-bottom: 8px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper i.icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2d2d30;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 12px 40px;
+  font-size: 15px;
+  color: #000000fc;
+  background: #fff9dd;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-wrapper input:focus {
+  background: #ffffff;
+  border-color: #3225eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input-wrapper input:focus + i.icon,
+.input-wrapper input:focus ~ i.icon {
+  color: #49eb25;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2d2d30;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.toggle-password:hover {
+  color: #80ff00fc;
+}
+
+/* ==========================================
+   Extra Form Options
+   ========================================== */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #7c7c799b;
+  cursor: pointer;
+}
+
+.remember-me input {
+  accent-color: #f4b91a;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color:#7c7c799b;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #f4b91a;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-btn:hover {
+  background: #d9a31d;
+  box-shadow: 0 6px 12px -2px rgba(37, 235, 50, 0);
+}
+
+.submit-btn:active {
+  transform: scale(0.99);
+}
+
+.spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   Success Screen
+   ========================================== */
+.success-container {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 16px;
+}
+
+.success-container h3 {
+  color: #1e293b;
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+.success-container p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 16px 20px;
+    background: rgba(40, 40, 44, 0.342);
+    color: #ffffff;
+    font-size: 14px;
+    border-top: 1px solid rgba(95, 89, 89, 0.1);
+}

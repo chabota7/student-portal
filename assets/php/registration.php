@@ -95,8 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $stmt->close();
 
-            $_SESSION['flash_success'] = 'Registration successful! Please log in.';
-            header('Location: ' . BASE_URL . '/assets/php/login.php');
+            if (is_logged_in()) {
+                $_SESSION['flash_success'] = 'Student added successfully.';
+                header('Location: ' . BASE_URL . '/assets/php/index.php');
+            } else {
+                $_SESSION['flash_success'] = 'Registration successful! Please log in.';
+                header('Location: ' . BASE_URL . '/assets/php/login.php');
+            }
             exit;
         } catch (mysqli_sql_exception $ex) {
             $errors['general'] = 'Sorry, we could not save your registration. Please try again.';
@@ -149,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Right Panel / Form Section -->
             <main class="col-12 col-lg-7 right-panel p-4 p-md-5 d-flex flex-column justify-content-center">
                 <h1 class="h2 text-warning fw-bold mb-2">Create Student Account</h1>
-                <p class="text-secondary mb-4">Already Enrolled? <a href="assets/php/portal.html" class="text-warning text-decoration-underline fw-bold">Log In to Portal</a></p>
+                <p class="text-secondary mb-4">Already Enrolled? <a href="<?php echo BASE_URL; ?>/assets/php/login.php" class="text-warning text-decoration-underline fw-bold">Log In to Portal</a></p>
                 
                 <button class="btn btn-outline-light w-100 mb-3 py-2" type="button">Continue with Google/SSO</button>
                 
