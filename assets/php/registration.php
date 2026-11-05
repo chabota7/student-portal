@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p class="mb-1">Panuel Sibanda - 20202582</p>
                     <p class="mb-1">Thokozile Banda - 202505196</p>
                     <p class="mb-1">Soonfa Wakasaka - 202503846</p>
-                    <p class="mb-1">Steve Petulu - 202402856</p>
+                    <!-- <p class="mb-1">Steve Petulu - 202402856</p> -->
                 </div>
             </aside>
 
@@ -214,32 +214,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-12 col-md-6">
                             <label for="programme" class="form-label text-light small">Degree Programme</label>
                             <select class="form-select bg-secondary text-white border-0" id="programme" name="programme">
-                                <option value="">Select Programme</option>
-                                <?php foreach ($programmes as $p): ?>
-                                    <option value="<?php echo e($p); ?>" <?php echo $old['programme'] === $p ? 'selected' : ''; ?>>
-                                        <?php echo e(str_replace('BSc ', '', $p)); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                                <option value="BSc Software Engineering">Software Engineering</option>
-                                <option value="BSc Cyber Security">Cyber Security</option>
-                                <option value="BSc Data Science">Data Science</option>
-                                <option value="BSc Information Technology">Information Technology</option>
-                                <option value="BSc Computer Science">Computer Science</option>
-                            </select>
+                            <option value="">Select Programme</option>
+                            <?php foreach ($programmes as $p): ?>
+                                <option value="<?php echo e($p); ?>" <?php echo $old['programme'] === $p ? 'selected' : ''; ?>>
+                                    <?php echo e(str_replace('BSc ', '', $p)); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                             <span class="text-danger small" id="programmeError"></span>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="year" class="form-label text-light small">Year of Study</label>
                             <select class="form-select bg-secondary text-white border-0" id="year" name="year">
-                                <option value="">Select Year</option>
-                                <?php for ($y = 1; $y <= 4; $y++): ?>
-                                    <option value="<?php echo $y; ?>" <?php echo $old['year'] === (string) $y ? 'selected' : ''; ?>><?php echo $y; ?></option>
-                                <?php endfor; ?>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
+                            <option value="">Select Year</option>
+                            <?php for ($y = 1; $y <= 4; $y++): ?>
+                                <option value="<?php echo $y; ?>" <?php echo $old['year'] === (string) $y ? 'selected' : ''; ?>><?php echo $y; ?></option>
+                            <?php endfor; ?>
+                        </select>
                             <span class="text-danger small" id="yearError"></span>
                         </div>
                     </div>
